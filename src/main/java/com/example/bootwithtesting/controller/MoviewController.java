@@ -1,6 +1,7 @@
 package com.example.bootwithtesting.controller;
 
 import com.example.bootwithtesting.dto.MovieDTO;
+import com.example.bootwithtesting.dto.MoviewResponse;
 import com.example.bootwithtesting.model.Movie;
 import com.example.bootwithtesting.service.MovieService;
 import lombok.AllArgsConstructor;
@@ -23,5 +24,11 @@ public class MoviewController {
 
         //return ResponseEntity.ok().body(MovieDTO.builder().success(true).build());
     }
-
+    @GetMapping("movie")
+    public ResponseEntity<MoviewResponse> getPokemons(
+            @RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNo,
+            @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize
+    ) {
+        return new ResponseEntity<>(movieService.getAllMoview(pageNo, pageSize), HttpStatus.OK);
+    }
 }
