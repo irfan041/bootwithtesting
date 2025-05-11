@@ -1,5 +1,7 @@
 package com.example.bootwithtesting.dto;
 
+import com.example.bootwithtesting.model.Movie;
+import com.example.bootwithtesting.model.Review;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
