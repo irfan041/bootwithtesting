@@ -10,6 +10,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -19,7 +20,7 @@ public class MovieServiceImpl implements MovieService {
     private MoviewRepository moviewRepository;
 
     @Override
-    public MovieDTO createMoview(Movie movie) {
+    public MovieDTO createMovie(Movie movie) {
 
         Movie newPokemon = moviewRepository.save(movie);
 
@@ -31,12 +32,12 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public MoviewResponse getAllMoview(int pageNo, int pageSize) {
+    public MoviewResponse getAllMovie(int pageNo, int pageSize) {
         Pageable pageable = PageRequest.of(pageNo, pageSize);
      Page<Movie> movies=moviewRepository.findAll(pageable);
         List<Movie> listOfMovie = movies.getContent();
         List<MovieDTO> content = listOfMovie.stream().map(p -> mapToDto(p)).collect(Collectors.toList());
-
+/*
         MoviewResponse movieResponse = new MoviewResponse();
         movieResponse.setContent(content);
         movieResponse.setPageNo(movies.getNumber());
@@ -46,30 +47,56 @@ public class MovieServiceImpl implements MovieService {
         movieResponse.setLast(movies.isLast());
 
         return movieResponse;
+       */
+       return MoviewResponse.builder()
+                .content(content)
+                .last(movies.isLast())
+                .totalElements(movies.getTotalElements())
+                .totalPages(movies.getTotalPages())
+                .pageNo(movies.getNumber())
+                .pageSize(movies.getSize())
+                .build();
+    }
+@Override
+   public List<Movie> getAllMovieWithDetails(){
+        return moviewRepository.findAll();
     }
 
     @Override
-    public MovieDTO getMoviewById(int id) {
+    public MovieDTO getMovieById(int id) {
+
+        Movie movie= moviewRepository.findById(id).get();
+
+        return MovieDTO.builder()
+                .id(movie.getId())
+                .name(movie.getName())
+                .type(movie.getType())
+                .build();
+    }
+
+    @Override
+    public MovieDTO updateMovie(MovieDTO movieDto, int id) {
         return null;
     }
 
     @Override
-    public MovieDTO updateMoview(MovieDTO movieDto, int id) {
-        return null;
-    }
-
-    @Override
-    public void deleteMoviewId(int id) {
+    public void deleteMovieId(int id) {
 
     }
 
     private MovieDTO mapToDto(Movie movie) {
-        MovieDTO movieDto = new MovieDTO();
+//        MovieDTO movieDto = new MovieDTO();
+//
+//        movieDto.setId(movie.getId());
+//        movieDto.setName(movie.getName());
+//        movieDto.setType(movie.getType());
+//
+//        return movieDto;
 
-        movieDto.setId(movie.getId());
-        movieDto.setName(movie.getName());
-        movieDto.setType(movie.getType());
-
-        return movieDto;
+        return MovieDTO.builder()
+                .id(movie.getId())
+                .name(movie.getName())
+                .type(movie.getType())
+                .build();
     }
 }
