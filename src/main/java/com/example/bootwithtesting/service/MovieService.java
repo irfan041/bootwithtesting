@@ -4,14 +4,17 @@ import com.example.bootwithtesting.dto.MovieDTO;
 import com.example.bootwithtesting.dto.MoviewResponse;
 import com.example.bootwithtesting.model.Movie;
 
+import java.util.List;
+
 public interface MovieService {
-    MovieDTO createMoview(Movie movie);
+    MovieDTO createMovie(Movie movie);
 
-    MoviewResponse getAllMoview(int pageNo, int pageSize);
+    MoviewResponse getAllMovie(int pageNo, int pageSize);
+    List<Movie> getAllMovieWithDetails();
 
-    MovieDTO getMoviewById(int id);
+    MovieDTO getMovieById(int id);
 
-    MovieDTO updateMoview(MovieDTO movieDto, int id);
+    MovieDTO updateMovie(MovieDTO movieDto, int id);
 
-    void deleteMoviewId(int id);
+    void deleteMovieId(int id);
 }
