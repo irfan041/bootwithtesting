@@ -2,6 +2,7 @@ package com.example.bootwithtesting.service;
 
 import com.example.bootwithtesting.dto.MovieDTO;
 import com.example.bootwithtesting.dto.MoviewResponse;
+import com.example.bootwithtesting.mapper.MovieMapper;
 import com.example.bootwithtesting.model.Movie;
 import com.example.bootwithtesting.repository.MoviewRepository;
 import lombok.AllArgsConstructor;
@@ -10,7 +11,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -18,17 +18,21 @@ import java.util.stream.Collectors;
 public class MovieServiceImpl implements MovieService {
 
     private MoviewRepository moviewRepository;
+    private final MovieMapper movieResponse;
 
     @Override
     public MovieDTO createMovie(Movie movie) {
 
-        Movie newPokemon = moviewRepository.save(movie);
+        Movie movie1 = moviewRepository.save(movie);
 
+/*
         MovieDTO movieResponse = new MovieDTO();
-        movieResponse.setId(newPokemon.getId());
-        movieResponse.setName(newPokemon.getName());
-        movieResponse.setType(newPokemon.getType());
-        return movieResponse;
+        movieResponse.setId(movie1.getId());
+        movieResponse.setName(movie1.getName());
+        movieResponse.setType(movie1.getType());
+
+ */
+        return movieResponse.MovieMapperToMovieDTO(movie1);
     }
 
     @Override
@@ -68,7 +72,6 @@ public class MovieServiceImpl implements MovieService {
         Movie movie= moviewRepository.findById(id).get();
 
         return MovieDTO.builder()
-                .id(movie.getId())
                 .name(movie.getName())
                 .type(movie.getType())
                 .build();
@@ -94,7 +97,6 @@ public class MovieServiceImpl implements MovieService {
 //        return movieDto;
 
         return MovieDTO.builder()
-                .id(movie.getId())
                 .name(movie.getName())
                 .type(movie.getType())
                 .build();
